@@ -1,6 +1,6 @@
 -module(slownik).
 
--export([nowy_slownik_ets/0, dodaj_tlumaczenie_ets/2, dodaj_nowe_slowo_ets/2, zmien_tlumaczenia_ets/2, przetlumacz_na_angielski_ets/1, toDETS/0]).
+-export([nowy_slownik_ets/0, dodaj_tlumaczenie_ets/2, dodaj_nowe_slowo_ets/2, zmien_tlumaczenia_ets/2, przetlumacz_na_angielski_ets/1, toDETS/0, print/1]).
 -export([nowy_slownik/0, dodaj_tlumaczenie/3, dodaj_nowe_slowo/3, zmien_tlumaczenia/3, przetlumacz_na_angielski/2]).
 
 -record(slowo, {wersja_polska, wersja_angielska=[]}).
@@ -58,28 +58,36 @@ przetlumacz_na_angielski_ets(Wersja_polska) ->
 
 
 %%wersja bez ets - dane sa przechowywane w tablicy:
-nowy_slownik() -> dane().
+nowy_slownik() ->
+  dane().
 
 %%funkcja dodaje nowe slowo z tlumaczeniem lub jesli juz istnieje dodaje do listy tlumaczen wersje angielska slowa
-dodaj_tlumaczenie(Wersja_polska, Tlumaczenie, []) -> [#slowo{wersja_polska = Wersja_polska, wersja_angielska = Tlumaczenie}];
+dodaj_tlumaczenie(Wersja_polska, Tlumaczenie, []) ->
+  [#slowo{wersja_polska = Wersja_polska, wersja_angielska = Tlumaczenie}];
 dodaj_tlumaczenie(Wersja_polska, Tlumaczenie, [H = #slowo{wersja_polska = Wersja_polska} | _]) ->
   [#slowo{wersja_polska = Wersja_polska, wersja_angielska = [Tlumaczenie] ++ H#slowo.wersja_angielska}];
-dodaj_tlumaczenie(Wersja_polska, Tlumaczenie, [H | T]) -> [H | dodaj_tlumaczenie(Wersja_polska, Tlumaczenie, T)].
+dodaj_tlumaczenie(Wersja_polska, Tlumaczenie, [H | T]) ->
+  [H | dodaj_tlumaczenie(Wersja_polska, Tlumaczenie, T)].
 
 %%funkcja dodaje nowe slowo z tlumaczeniem
 dodaj_nowe_slowo(Wersja_polska, Tlumaczenia, L) ->
   [#slowo{wersja_polska = Wersja_polska, wersja_angielska = Tlumaczenia} | L].
 
 %%funkcja nadpisuje tlumaczenia do istniejacego slowa
-zmien_tlumaczenia(Wersja_polska, Lista_nowych_tlumaczen, []) -> [#slowo{wersja_polska = Wersja_polska, wersja_angielska = Lista_nowych_tlumaczen}];
+zmien_tlumaczenia(Wersja_polska, Lista_nowych_tlumaczen, []) ->
+  [#slowo{wersja_polska = Wersja_polska, wersja_angielska = Lista_nowych_tlumaczen}];
 zmien_tlumaczenia(Wersja_polska, Lista_nowych_tlumaczen, [#slowo{wersja_polska = Wersja_polska} | _]) ->
   [#slowo{wersja_polska = Wersja_polska, wersja_angielska = Lista_nowych_tlumaczen}];
-zmien_tlumaczenia(Wersja_polska, Lista_nowych_tlumaczen, [H | T]) -> [H | zmien_tlumaczenia(Wersja_polska,Lista_nowych_tlumaczen, T)].
+zmien_tlumaczenia(Wersja_polska, Lista_nowych_tlumaczen, [H | T]) ->
+  [H | zmien_tlumaczenia(Wersja_polska,Lista_nowych_tlumaczen, T)].
 
 %%funkcja wypisuje wartosci dla danego klucza
-przetlumacz_na_angielski(_, []) -> [];
-przetlumacz_na_angielski(Wersja_polska, [#slowo{wersja_polska = Wersja_polska} | _]) -> #slowo.wersja_angielska;
-przetlumacz_na_angielski(Wersja_polska, [_ | T]) -> przetlumacz_na_angielski(Wersja_polska, T).
+przetlumacz_na_angielski(_, []) ->
+  [];
+przetlumacz_na_angielski(Wersja_polska, [H = #slowo{wersja_polska = Wersja_polska} | _]) ->
+  H#slowo.wersja_angielska;
+przetlumacz_na_angielski(Wersja_polska, [_ | T]) ->
+  przetlumacz_na_angielski(Wersja_polska, T).
 
 
 %%funkcja wypisuje tabelę ets

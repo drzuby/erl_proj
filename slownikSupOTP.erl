@@ -1,7 +1,7 @@
 -module(slownikSupOTP).
 -behaviour(gen_server).
 
--export([start_link/0, init/1, handle_call/3, handle_cast/2, code_change/3, handle_info/2, terminate/2, stop/0, crash/0, check/2]).
+-export([start_link/0, init/1, handle_call/3, handle_cast/2, code_change/3, handle_info/2, terminate/2, stop/0, crash/0, check/2, toDETS/0]).
 -export([nowy_slownik_ets/0, dodaj_tlumaczenie_ets/2, dodaj_nowe_slowo_ets/2, zmien_tlumaczenia_ets/2, przetlumacz_na_angielski_ets/1]).
 -export([nowy_slownik/0, dodaj_tlumaczenie/2, dodaj_nowe_slowo/2, zmien_tlumaczenia/2, przetlumacz_na_angielski/1]).
 
@@ -27,6 +27,10 @@ zmien_tlumaczenia_ets(Wersja_polska, Lista_nowych_tlumaczen) ->
 
 przetlumacz_na_angielski_ets( Wersja_polska) ->
   gen_server:call(slownikSupOTP, {przetlumacz_na_angielski_ets, Wersja_polska}).
+
+toDETS() ->
+  gen_server:call(slownikSupOTP, {toDETS}).
+
 
 %%funkcje obslugujace slownik przechowywany w tablicy:
 nowy_slownik() ->
@@ -63,6 +67,9 @@ handle_call({zmien_tlumaczenia_ets, Wersja_polska, Lista_nowych_tlumaczen}, _, S
 
 handle_call({przetlumacz_na_angielski_ets, Wersja_polska}, _, Slownik) ->
 {reply, slownik:przetlumacz_na_angielski_ets(Wersja_polska), Slownik};
+
+handle_call({toDETS}, _, Slownik) ->
+  check(Slownik, slownik:toDETS());
 
 %bez ets:
 handle_call({nowy_slownik}, _, Slownik) ->

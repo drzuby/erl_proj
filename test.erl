@@ -7,26 +7,20 @@ test() ->
   %compile:file(slownikSupOTP),
   %compile:file(slownikSupervisorOTP),
   slownikSupervisorOTP:start_link(),
-  io:format("nowy_slownik_ets:\n"),
-  io:format("~w", [timer:tc(slownikSupOTP, nowy_slownik_ets, [])]),
-  io:format("\n\n\n"),
+  io:format("\nnowy_slownik_ets:\n"),
+  io:format("~w\n\n", [timer:tc(slownikSupOTP, nowy_slownik_ets, [])]),
 
   io:format("dodaj_tlumaczenie_ets:\n"),
-  io:format("~w", [timer:tc(slownikSupOTP, dodaj_tlumaczenie_ets, ["ulewa", "storm"])]),
-  io:format("\n\n\n"),
+  io:format("~w\n\n", [timer:tc(slownikSupOTP, dodaj_tlumaczenie_ets, ["ulewa", "storm"])]),
 
   io:format("dodaj_nowe_slowo_ets:\n"),
-  io:format("~w", [timer:tc(slownikSupOTP, dodaj_nowe_slowo_ets, ["kot", "cat"])]),
-  io:format("\n\n\n"),
+  io:format("~w\n\n", [timer:tc(slownikSupOTP, dodaj_nowe_slowo_ets, ["kot", "cat"])]),
 
   io:format("zmien_tlumaczenia_ets:\n"),
-  io:format("~w", [timer:tc(slownikSupOTP, zmien_tlumaczenia_ets, ["ulewa", "nothing"])]),
-  io:format("\n\n\n"),
+  io:format("~w\n\n", [timer:tc(slownikSupOTP, zmien_tlumaczenia_ets, ["ulewa", "nothing"])]),
 
   io:format("przetlumacz_na_angielski_ets:\n"),
-  io:format("~w", [timer:tc(slownikSupOTP, przetlumacz_na_angielski_ets, ["ulewa"])]),
-  io:format("\n\n\n"),
+  io:format("~w\n\n", [timer:tc(slownikSupOTP, przetlumacz_na_angielski_ets, ["kot"])]),
 
   io:format("toDETS:\n"),
-  io:format("~w", [timer:tc(slownikSupOTP, toDETS, [])]),
-  io:format("\n\n\n").
+  io:format("~w\n\n", [timer:tc(slownikSupOTP, toDETS, [])]).
